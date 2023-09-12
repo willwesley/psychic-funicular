@@ -1,22 +1,29 @@
+@media screen and (max-width: 500px) {
+  h1 {
+    color: red;
+  }
+  .question {
+    opacity: .5;
+    text-align: center;
+  }
+  body {
+    background: url(http://placekitten.com/1024/1024);
+  }
+  #answer {
+    font-size: 50px;
+  }
 
-h1 {
-  color: red;
-}
-.question {
-  opacity: .5;
-  text-align: center;
-}
-body {
-  background: url(http://placekitten.com/1024/1024);
-}
-#answer {
-  font-size: 50px;
+  form input#answer {
+    opacity: .2;
+  }
+
+  form input:hover {
+    opacity: 1;
+  }
 }
 
-form input#answer {
-  opacity: .2;
-}
-
-form input:hover {
-  opacity: 1;
+@media print {
+  * {
+    font-weight: bold;
+  }
 }
