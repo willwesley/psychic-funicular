@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  php:
+    image: stupidphp
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - 4000:80
+    build: ./
+
+  mysql:
+    image: mysql
+    volumes:
+      - ./data:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
+    ports:
+      - 3306:3306
