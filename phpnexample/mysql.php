@@ -13,8 +13,17 @@
       die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "SELECT name, email, password FROM users";
-    $result = $conn->query($sql);
+    // no bad! don't be do this!
+    $sql = "SELECT name, email, password FROM users WHERE name LIKE '%" . $_REQUEST["q"] . "%'";
+
+    // mmm, parameterized queries. yum.
+    $q = "%" . $_REQUEST["q"] . "%";
+    $sql = "SELECT name, email, password FROM users WHERE name LIKE ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $q);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
       ?><table><tr><th>Name</th><th>email</th><th>password</th></tr><?php
