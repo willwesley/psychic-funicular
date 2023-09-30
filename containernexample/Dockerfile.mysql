@@ -1,0 +1,6 @@
+FROM node
+
+WORKDIR /usr/app
+RUN npm install mysql
+COPY mysql.js mysql.js
+CMD ["node","mysql.js"]
