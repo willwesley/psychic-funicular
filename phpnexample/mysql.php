@@ -5,7 +5,7 @@
   <?php
     $servername = "mysql";
     $username = "root";
-    $password = "my-secret-pw";
+    $password = "password";
     $dbname = "db34";
 
     $conn = new mysqli($servername, $username, $password, $dbname);

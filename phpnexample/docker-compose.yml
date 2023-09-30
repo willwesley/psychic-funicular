@@ -13,7 +13,11 @@ services:
     image: mysql
     volumes:
       - ./data:/docker-entrypoint-initdb.d
+      - db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=my-secret-pw
     ports:
       - 3306:3306
+
+volumes:
+  db:
