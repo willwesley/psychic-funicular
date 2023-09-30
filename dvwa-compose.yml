@@ -18,6 +18,12 @@ services:
     networks:
       - dvwa
     ports:
+      # <porta>:<portb> maps porta on the host
+      # to portb on the container
+      #- 4280:80
+      # <ip>:<porta>:<portb> maps porta only on 
+      # the interface with that ip to portb on 
+      # the container. neat!
       - 127.0.0.1:4280:80
     restart: unless-stopped
 
