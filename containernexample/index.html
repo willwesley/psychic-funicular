@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <script
+    src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+    crossorigin="anonymous"></script>  
+  </head>
+  <body>
+    <button id="lawl">Click me</button>
+    <button id="oops">Don't Click me</button>
+  <script>
+    /***** Promise consumption example *****/
+
+    /* function that takes an array of "users" (objects with name and email properties)
+     * and converts them to an unordered list DOM object */
+    const arrToLis = arr => {
+      // create a ul DOM element
+      const ul = document.createElement("ul")
+      // set its inner HTML to the names and emails in li tags
+      // what assumptions am I making here? what risk does the following line of code present?
+      ul.innerHTML = arr.map(user => "<li>" + user.name + ": " + user.email +"</li>").join("\n")
+      // return the new fancy DOM element
+      return ul
+    }
+
+    /* function that fetches users and puts them on the DOM in a ul. */
+    updatelist = () => fetch("/users") // fetch returns a promise
+      .then(res => res.json())         // when it resolves, we call json on the value, which returns another promise
+      .then(arrToLis)                  // when that resolves, we convert it to a ul with the arrToList fn
+      .then(ul => document.body.append(ul)) // and append that to the document body
+      .catch(() => console.log("oops"))     // errors make log entries
+      .finally(() => console.log("geesh!")) // we always complain
+
+    /* register that function as a handler for click events on the body */
+    document.body.addEventListener("click", updatelist)
+
+
+    /***** Promise production example *****/
+
+    /* create a new promise. Using the "new" keyword instantiates a new object that is initialized
+     * with a constructor function. Promise is a constructor function that takes another function
+     * called the executer. The executor's job is to make sure that one of its two parameters are
+     * eventually called to resolve or reject the promise */
+    const example = new Promise((resolve, reject) => {
+      /* this promise is a click counter */
+      let clicks = 0;
+      /* click the lawl button twenty times to resolve the promise */
+      document.getElementById("lawl").addEventListener("click", () => {
+        clicks++
+        if(clicks>20) {
+          resolve("you did it!")
+        }
+      })
+      /* click the oops button once to make it reject */
+      document.getElementById("oops").addEventListener("click", () => {
+            reject("Doh")
+      })
+    })
+
+    // we'll consume the above promise by making it alert the resolved value or rejected reason.
+    example.then(alert).catch(alert)
+
+    /***** async/await example *****/
+    /* still using the example promise, this function is async, which means it can surrender
+     * control of the thread of execution before completing, and resume once its awaited
+     * thenable resolves */
+    const wow = async () => {
+      console.log("before await") // logged immediately after call below
+      try {
+        answer = await example    // stops here until you either click lawl 20x or oops 1x
+        console.log(answer)       // clicked lawl 20x? this will log "you did it!"
+      } catch(e) {
+        console.log(e)            // clicked the oops instead? here's your error handling
+      }
+    }
+    wow()
+  </script>
+  </body>
+</html>
