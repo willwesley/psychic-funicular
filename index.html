@@ -5,6 +5,12 @@
     <title>My Cool Page</title>
   </head>
   <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+      $(() => {
+        console.log($(".question"))
+      })
+    </script>
     <form method="POST">
       <label for="answer">What's the answer?</label>
       <input id="answer" name="neat" class="answer" />
@@ -17,6 +23,7 @@
     <h3 class="question">right guys?</h3>
     <h4>right? :(</h4>
     <h6 class="question">smallest heading thing</h6>
+
 
   </body>
 </html>
