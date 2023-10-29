@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      h1 {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1 v-on:click="clickfn">{{ what }}</h1>
+      <a :href="what">wtf</a>
+      <input :value="what" @input="changeFn" />
+      <input v-model="what" />
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      Vue.createApp({
+        setup() {
+          let what = Vue.ref("oh")
+          setTimeout(() => what.value = "<u>my</u>", 5000)
+          return {
+            what: what,
+            clickfn() {
+              alert(what.value)
+            },
+            changeFn(e) {
+              what.value = e.target.value
+            }
+          }
+        }
+      }).mount("#app")
+    </script>
+  </body>
+</html>
