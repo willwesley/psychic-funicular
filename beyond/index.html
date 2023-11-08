@@ -33,6 +33,16 @@
         })
       }
       fetchAndSchedule()
+
+      // Websocket talk to demo hello server
+      const ws = new WebSocket("wss://javascript.info/article/websocket/demo/hello")
+      ws.addEventListener("open", () => {
+         ws.send("hiya")
+      })
+      ws.addEventListener("message", (message) => console.log(
+        "Well, it works when not just plopped in the console.",
+        message.data
+      ))
     </script>
   </body>
 </html>
