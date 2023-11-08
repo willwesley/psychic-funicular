@@ -1,5 +1,6 @@
 const fs = require("fs");
 const http = require("http");
+const WS = require("ws")
 
 const cats = {
   angry: 0,
@@ -45,11 +46,17 @@ const catlives = setInterval(() => {
     clearInterval(catlives)
   }
   listeners.forEach(l => l.end(JSON.stringify(cats)))
-}, 10 * 1000)
+  wss.clients.forEach(ws => {
+    if(ws.readyState === WS.OPEN) {
+      ws.send(JSON.stringify(cats))
+    }
+  })
+}, 1 * 1000)
+
 
 const listeners = []
 
-http.createServer((request, response) => {
+const server = http.createServer((request, response) => {
   switch(request.url) {
     case '/long-cats':
       listeners.push(response);
@@ -62,7 +69,12 @@ http.createServer((request, response) => {
       const htmlfile = fs.readFileSync('index.html', 'utf8')
       response.end(htmlfile)
   }
-}).listen(3000);
+})
+const wss = new WS.WebSocketServer({ server })
+wss.on("connection", ws => {
+  ws.send(JSON.stringify(cats))
+})
+server.listen(3000);
 
 console.log("server probably started");
 

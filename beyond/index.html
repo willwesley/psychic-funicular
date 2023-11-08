@@ -32,17 +32,13 @@
           fetchAndSchedule()
         })
       }
-      fetchAndSchedule()
+      //fetchAndSchedule()
 
-      // Websocket talk to demo hello server
-      const ws = new WebSocket("wss://javascript.info/article/websocket/demo/hello")
-      ws.addEventListener("open", () => {
-         ws.send("hiya")
+      // Websocket solution
+      const ws = new WebSocket("ws://" + window.location.host)
+      ws.addEventListener("message", (message) => {
+        writeOut(JSON.parse(message.data))
       })
-      ws.addEventListener("message", (message) => console.log(
-        "Well, it works when not just plopped in the console.",
-        message.data
-      ))
     </script>
   </body>
 </html>
