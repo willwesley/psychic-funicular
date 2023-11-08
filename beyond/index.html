@@ -21,8 +21,18 @@
         d.innerText = dead
       }
       // polling solution
-      const fetchCats = () => fetch("/cats").then(res => res.json()).then(writeOut)
-      setInterval(fetchCats, 10 * 1000)
+      // const fetchCats = () => fetch("/cats").then(res => res.json()).then(writeOut)
+      // setInterval(fetchCats, 10 * 1000)
+
+      // long-polling solution
+      const fetchLongCats = () => fetch("/long-cats").then(res => res.json())
+      const fetchAndSchedule = () => {
+        fetchLongCats().then(json => {
+          writeOut(json);
+          fetchAndSchedule()
+        })
+      }
+      fetchAndSchedule()
     </script>
   </body>
 </html>

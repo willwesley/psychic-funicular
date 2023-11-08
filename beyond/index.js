@@ -44,10 +44,16 @@ const catlives = setInterval(() => {
   if(cats.content + cats.hungry + cats.angry === 0) {
     clearInterval(catlives)
   }
+  listeners.forEach(l => l.end(JSON.stringify(cats)))
 }, 10 * 1000)
+
+const listeners = []
 
 http.createServer((request, response) => {
   switch(request.url) {
+    case '/long-cats':
+      listeners.push(response);
+      break;
     case '/cats':
       response.writeHead(200, { 'Content-Type': 'application/json' })
       response.end(JSON.stringify(cats))
