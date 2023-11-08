@@ -20,7 +20,9 @@
         a.innerText = angry
         d.innerText = dead
       }
-      fetch("/cats").then(res => res.json()).then(writeOut)
+      // polling solution
+      const fetchCats = () => fetch("/cats").then(res => res.json()).then(writeOut)
+      setInterval(fetchCats, 10 * 1000)
     </script>
   </body>
 </html>
