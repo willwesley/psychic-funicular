@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<style>
+  table { width: 100%; text-align: center; border: 1px solid grey }
+</style>
+  <body>
+    <table>
+      <tr>
+        <th>Content</th><th>Hungry</th><th>Angry</th><th>Dead</th>
+      </tr>
+      <tr>
+        <td></td> <td></td> <td></td> <td></td>
+      </tr>
+    </table>
+    <script>
+      const [ c, h, a, d ] = document.querySelectorAll("td")
+      const writeOut = ({ angry, hungry, content, dead }) => {
+        c.innerText = content
+        h.innerText = hungry
+        a.innerText = angry
+        d.innerText = dead
+      }
+      fetch("/cats").then(res => res.json()).then(writeOut)
+    </script>
+  </body>
+</html>
