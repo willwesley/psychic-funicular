@@ -35,10 +35,14 @@
       //fetchAndSchedule()
 
       // Websocket solution
-      const ws = new WebSocket("ws://" + window.location.host)
-      ws.addEventListener("message", (message) => {
-        writeOut(JSON.parse(message.data))
-      })
+      // const ws = new WebSocket("ws://" + window.location.host)
+      // ws.addEventListener("message", (message) => {
+      //   writeOut(JSON.parse(message.data))
+      // })
+
+      // SSE solution
+      const source = new EventSource("/sse-cats")
+      source.addEventListener('message', ({ data }) => writeOut(JSON.parse(data)))
     </script>
   </body>
 </html>

@@ -45,6 +45,7 @@ const catlives = setInterval(() => {
   if(cats.content + cats.hungry + cats.angry === 0) {
     clearInterval(catlives)
   }
+  sseListeners.forEach(l => l.write("data: " + JSON.stringify(cats) + "\n\n"))
   listeners.forEach(l => l.end(JSON.stringify(cats)))
   wss.clients.forEach(ws => {
     if(ws.readyState === WS.OPEN) {
@@ -54,10 +55,18 @@ const catlives = setInterval(() => {
 }, 1 * 1000)
 
 
+const sseListeners = []
 const listeners = []
 
 const server = http.createServer((request, response) => {
   switch(request.url) {
+    case '/sse-cats':
+      response.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Connection': 'keep-alive',
+      })
+      sseListeners.push(response)
+      break
     case '/long-cats':
       listeners.push(response);
       break;
