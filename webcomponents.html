@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="styles.css" rel="stylesheet" />
+    <title>Web Components</title>
+  </head>
+  <body>
+        <template id="usertmpl">
+          <div class="user">
+            <img />
+            <a></a>
+          </div>
+        </template>
+
+        <template id="todoitem">
+          <input type="checkbox"></input>
+          <slot></slot>
+        </template>
+
+        <template id="todorow">
+          <tr>
+            <td><slot name="user"></slot></td>
+            <td><slot></slot></td>
+          </tr>
+        </template>
+
+        <todo-row>
+          <user-frame name="Chalres McFluffins" slot="user"></user-frame>
+          <todo-item><img src="http://placebacon.net/100/100" />Kill bunnies</todo-item>
+        </todo-row>
+
+        <script>
+          class TodoRow extends HTMLElement {
+                      connectedCallback() {
+                                  this.attachShadow({ mode: "open" })
+                                  this.tmpl = document.getElementById("todorow")
+                                  this.shadowRoot.append(this.tmpl.content.cloneNode(true))
+                      }
+          }
+          customElements.define("todo-row", TodoRow)
+
+          class TodoItem extends HTMLElement {
+                      connectedCallback() {
+                                  this.attachShadow({ mode: "open" })
+                                  this.tmpl = document.getElementById("todoitem")
+                                  this.shadowRoot.append(this.tmpl.content.cloneNode(true))
+                      }
+          }
+          customElements.define("todo-item", TodoItem)
+
+          class User extends HTMLElement {
+                      constructor() {
+                                  super()
+                                  this.tmpl = document.getElementById("usertmpl")
+                                  const x = Math.floor(Math.random() * 200) + 100
+                                  this.avatar = `http://placekitten.com/${x}/${x}`
+                                  this.name = "Meow Doe"
+                                  this.email = "dontreply@catvomit.com"
+                      }
+                      connectedCallback() {
+                                  this.append(this.tmpl.content.cloneNode(true))
+                                  this.img = this.querySelector("img")
+                                  this.a = this.querySelector("a")
+                                  this.render()
+                      }
+                      static get observedAttributes() {
+                                  return [ "avatar", "name", "email" ]
+                      }
+                      attributeChangedCallback(name, prev, current) {
+                                  switch(name) {
+                                     case "avatar": this.avatar = current; break;
+                                     case "name": this.name = current; break;
+                                     case "email": this.email = current; break;
+                                  }
+                                  this.render()
+                      }
+                      render() {
+                        this.img.src = this.avatar;
+                        this.a.innerText = this.name;
+                        this.a.href = "mailto:" + this.email
+                      }
+          }
+          customElements.define("user-frame", User);
+        </script>
+  </body>
+</html>
+
