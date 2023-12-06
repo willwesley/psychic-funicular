@@ -1,32 +1,45 @@
+
 <!DOCTYPE html>
 <html>
   <head>
     <link href="styles.css" rel="stylesheet" />
     <title>Web Components</title>
+<style>
+h1 { background:  black; }
+</style>
   </head>
   <body>
+    <h1>TODO Thing</h1>
         <template id="usertmpl">
           <div class="user">
             <img />
             <a></a>
           </div>
         </template>
-
         <template id="todoitem">
           <input type="checkbox"></input>
           <slot></slot>
+<style>
+:host([completed]) {
+  text-decoration: line-through;
+}
+</style>
         </template>
 
         <template id="todorow">
-          <tr>
-            <td><slot name="user"></slot></td>
-            <td><slot></slot></td>
-          </tr>
+          <div>
+            <h1><slot name="user"></slot></h1>
+            <span><slot></slot></span>
+          </div>
         </template>
 
         <todo-row>
           <user-frame name="Chalres McFluffins" slot="user"></user-frame>
-          <todo-item><img src="http://placebacon.net/100/100" />Kill bunnies</todo-item>
+          <todo-item completed>Kill bunnies</todo-item>
+        </todo-row>
+        <todo-row>
+          <user-frame name="Mr. N00dles" slot="user"></user-frame>
+          <todo-item>Change password</todo-item>
         </todo-row>
 
         <script>
